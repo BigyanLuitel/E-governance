@@ -22,6 +22,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'citizenship_number',
+        'address',
+        'ward_office_id',
+
+
     ];
 
     /**
@@ -46,4 +53,33 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function wardOffice()
+    {
+        return $this->belongsTo(WardOffice::class);
+    }
+
+    public function documentRequests()
+    {
+        return $this->hasMany(DocumentRequest::class, 'citizen_id');
+    }
+
+    public function assignedRequests()
+    {
+        return $this->hasMany(DocumentRequest::class, 'officer_id');
+    }
+    public function isCitizen(): bool
+    {
+        return $this->role === 'citizen';
+    }
+
+    public function isOfficer(): bool
+    {
+        return $this->role === 'officer';
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }
+

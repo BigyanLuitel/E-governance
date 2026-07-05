@@ -51,5 +51,23 @@ class DocumentRequest extends Model
     {
         return $this->hasMany(RequestStatusLog::class);
     }
+    public function updateStatus(string $newStatus, User $changedBy, ?string $remarks = null): void
+    {
+        $oldStatus = $this->status;
+
+        $this->update([
+
+            'status' => $newStatus,
+            'officer_remarks' => $remarks ?? $this->officer_remarks,
+            'processed_at' => in_array($newStatus, ['approved', 'rejected']) ? now() : $this->processed_at,
+        ]);
+
+        $this->statusLogs()->create([
+            'old_status' => $oldStatus,
+            'new_status' => $newStatus,
+            'changed_by' => $changedBy->id,
+            'remarks' => $remarks,
+        ]);
+    }
 }
 
