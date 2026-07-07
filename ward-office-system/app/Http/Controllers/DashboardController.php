@@ -16,9 +16,11 @@ class DashboardController extends Controller
             'admin' => redirect()->route('admin.dashboard'),
         };
     }
-    public function citizen()
+    public function citizen(Request $request)
     {
-        return view('citizen.dashboard');
+        $requests = $request->user()->documentRequests()->with('documentType')->latest()->get();
+
+        return view('citizen.dashboard', compact('requests'));
     }
     public function officer()
     {
@@ -28,5 +30,6 @@ class DashboardController extends Controller
     {
         return view('admin.dashboard');
     }
+
 }
 
