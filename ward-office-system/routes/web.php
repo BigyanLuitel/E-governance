@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\controllers\DocumentRequestController;
+use App\Http\Controllers\OfficerRequestController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +23,14 @@ Route::middleware(['auth', 'role:citizen'])->group(function () {
 Route::get('/officer/dashboard', [DashboardController::class, 'officer'])
     ->middleware(['auth', 'role:officer'])
     ->name('officer.dashboard');
+
+
+
+Route::middleware(['auth', 'role:officer'])->group(function () {
+    Route::get('/officer/requests', [OfficerRequestController::class, 'index'])->name('officer.requests.index');
+    Route::get('/officer/requests/{documentRequest}', [OfficerRequestController::class, 'show'])->name('officer.requests.show');
+    Route::patch('/officer/requests/{documentRequest}', [OfficerRequestController::class, 'update'])->name('officer.requests.update');
+});
 
 Route::get('/admin/dashboard', [DashboardController::class, 'admin'])
     ->middleware(['auth', 'role:admin'])
