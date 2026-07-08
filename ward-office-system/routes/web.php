@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\controllers\DocumentRequestController;
 use App\Http\Controllers\OfficerRequestController;
+use App\Http\Controllers\Admin\WardOfficeController;
+use App\Http\Controllers\Admin\DocumentTypeController;
+use App\Http\Controllers\Admin\RequestOversightController;
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -36,7 +42,23 @@ Route::get('/admin/dashboard', [DashboardController::class, 'admin'])
     ->middleware(['auth', 'role:admin'])
     ->name('admin.dashboard');
 
+use App\Http\Controllers\Admin\OfficerController;
 
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/officers', [OfficerController::class, 'index'])->name('officers.index');
+    Route::get('/officers/create', [OfficerController::class, 'create'])->name('officers.create');
+    Route::post('/officers', [OfficerController::class, 'store'])->name('officers.store');
+
+    Route::get('/ward-offices', [WardOfficeController::class, 'index'])->name('ward-offices.index');
+    Route::get('/ward-offices/create', [WardOfficeController::class, 'create'])->name('ward-offices.create');
+    Route::post('/ward-offices', [WardOfficeController::class, 'store'])->name('ward-offices.store');
+
+
+    Route::get('/document-types', [DocumentTypeController::class, 'index'])->name('document-types.index');
+    Route::patch('/document-types/{documentType}/toggle', [DocumentTypeController::class, 'toggle'])->name('document-types.toggle');
+    Route::get('/requests', [RequestOversightController::class, 'index'])->name('requests.index');
+
+});
 
 
 Route::middleware('auth')->group(function () {
