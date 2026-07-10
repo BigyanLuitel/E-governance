@@ -1,47 +1,54 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-bold text-xl text-navy-900 leading-tight">
             Requests — {{ $requests->first()?->wardOffice?->ward_number ?? 'Your Ward' }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white border border-gray-200 sm:rounded-md">
 
                 @if ($requests->isEmpty())
-                    <p class="text-gray-600">No requests found for your ward.</p>
+                    <p class="text-ink-600 text-sm px-6 py-8">No requests found for your ward.</p>
                 @else
-                    <table class="w-full text-left">
+                    <table class="w-full text-left text-sm">
                         <thead>
-                            <tr class="border-b">
-                                <th class="py-2">Citizen</th>
-                                <th class="py-2">Document Type</th>
-                                <th class="py-2">Status</th>
-                                <th class="py-2">Submitted</th>
-                                <th class="py-2">Action</th>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-ink-600">
+                                <th class="py-3 px-6 font-semibold">Citizen</th>
+                                <th class="py-3 px-6 font-semibold">Document Type</th>
+                                <th class="py-3 px-6 font-semibold">Status</th>
+                                <th class="py-3 px-6 font-semibold">Submitted</th>
+                                <th class="py-3 px-6 font-semibold"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($requests as $req)
-                                <tr class="border-b">
-                                    <td class="py-2">{{ $req->citizen->name }}</td>
-                                    <td class="py-2">{{ $req->documentType->name }}</td>
-                                    <td class="py-2">
-                                        <span class="px-2 py-1 rounded text-xs
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-6">{{ $req->citizen->name }}</td>
+                                    <td class="py-3 px-6">{{ $req->documentType->name }}</td>
+                                    <td class="py-3 px-6">
+                                        <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide
                                                     @class([
-                                                        'bg-yellow-100 text-yellow-800' => $req->status === 'pending',
-                                                        'bg-blue-100 text-blue-800' => $req->status === 'under_review',
-                                                        'bg-green-100 text-green-800' => $req->status === 'approved',
-                                                        'bg-red-100 text-red-800' => $req->status === 'rejected',
+                                                        'text-ink-600' => $req->status === 'pending',
+                                                        'text-navy-700' => $req->status === 'under_review',
+                                                        'text-govgreen-800' => $req->status === 'approved',
+                                                        'text-maroon-800' => $req->status === 'rejected',
                                                     ])">
+                                            <span class="w-1.5 h-1.5 rounded-full @class([
+                                                'bg-ink-600' => $req->status === 'pending',
+                                                'bg-navy-700' => $req->status === 'under_review',
+                                                'bg-govgreen-800' => $req->status === 'approved',
+                                                'bg-maroon-800' => $req->status === 'rejected',
+                                            ])"></span>
                                             {{ str_replace('_', ' ', $req->status) }}
                                         </span>
                                     </td>
-                                    <td class="py-2">{{ $req->created_at->format('M d, Y') }}</td>
-                                    <td class="py-2">
-                                        <a href="{{ route('officer.requests.show', $req) }}" class="text-blue-600 underline">
-                                            Review
+                                    <td class="py-3 px-6 text-ink-600">{{ $req->created_at->format('M d, Y') }}</td>
+                                    <td class="py-3 px-6 text-right">
+                                        <a href="{{ route('officer.requests.show', $req) }}"
+                                            class="text-navy-700 font-medium hover:underline">
+                                            Review →
                                         </a>
                                     </td>
                                 </tr>
@@ -49,7 +56,7 @@
                         </tbody>
                     </table>
 
-                    <div class="mt-4">
+                    <div class="px-6 py-4 border-t border-gray-200">
                         {{ $requests->links() }}
                     </div>
                 @endif

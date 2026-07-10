@@ -1,65 +1,66 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-bold text-xl text-navy-900 leading-tight">
             Admin Dashboard
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <p>Welcome, {{ auth()->user()->name }}.</p>
+            <p class="text-ink-600 text-sm">Welcome, {{ auth()->user()->name }}.</p>
 
             {{-- Stats grid --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white shadow-sm rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Total Requests</p>
-                    <p class="text-2xl font-semibold">{{ $stats['total_requests'] }}</p>
+            <div
+                class="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-200 border border-gray-200 sm:rounded-md overflow-hidden">
+                <div class="bg-white p-4">
+                    <p class="text-xs text-ink-600 uppercase tracking-wide">Total Requests</p>
+                    <p class="text-2xl font-bold text-navy-900 mt-1">{{ $stats['total_requests'] }}</p>
                 </div>
-                <div class="bg-white shadow-sm rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Pending</p>
-                    <p class="text-2xl font-semibold text-yellow-600">{{ $stats['pending'] }}</p>
+                <div class="bg-white p-4">
+                    <p class="text-xs text-ink-600 uppercase tracking-wide">Pending</p>
+                    <p class="text-2xl font-bold text-ink-900 mt-1">{{ $stats['pending'] }}</p>
                 </div>
-                <div class="bg-white shadow-sm rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Under Review</p>
-                    <p class="text-2xl font-semibold text-blue-600">{{ $stats['under_review'] }}</p>
+                <div class="bg-white p-4">
+                    <p class="text-xs text-ink-600 uppercase tracking-wide">Under Review</p>
+                    <p class="text-2xl font-bold text-navy-700 mt-1">{{ $stats['under_review'] }}</p>
                 </div>
-                <div class="bg-white shadow-sm rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Approved</p>
-                    <p class="text-2xl font-semibold text-green-600">{{ $stats['approved'] }}</p>
+                <div class="bg-white p-4">
+                    <p class="text-xs text-ink-600 uppercase tracking-wide">Approved</p>
+                    <p class="text-2xl font-bold text-govgreen-800 mt-1">{{ $stats['approved'] }}</p>
                 </div>
-                <div class="bg-white shadow-sm rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Rejected</p>
-                    <p class="text-2xl font-semibold text-red-600">{{ $stats['rejected'] }}</p>
+                <div class="bg-white p-4">
+                    <p class="text-xs text-ink-600 uppercase tracking-wide">Rejected</p>
+                    <p class="text-2xl font-bold text-maroon-800 mt-1">{{ $stats['rejected'] }}</p>
                 </div>
-                <div class="bg-white shadow-sm rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Officers</p>
-                    <p class="text-2xl font-semibold">{{ $stats['total_officers'] }}</p>
+                <div class="bg-white p-4">
+                    <p class="text-xs text-ink-600 uppercase tracking-wide">Officers</p>
+                    <p class="text-2xl font-bold text-navy-900 mt-1">{{ $stats['total_officers'] }}</p>
                 </div>
-                <div class="bg-white shadow-sm rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Ward Offices</p>
-                    <p class="text-2xl font-semibold">{{ $stats['total_ward_offices'] }}</p>
+                <div class="bg-white p-4">
+                    <p class="text-xs text-ink-600 uppercase tracking-wide">Ward Offices</p>
+                    <p class="text-2xl font-bold text-navy-900 mt-1">{{ $stats['total_ward_offices'] }}</p>
                 </div>
             </div>
 
             {{-- Quick links --}}
-            <div class="bg-white shadow-sm rounded-lg p-6">
-                <h3 class="text-lg font-medium mb-4">Manage</h3>
-                <div class="flex gap-4 flex-wrap">
+            <div class="bg-white border border-gray-200 sm:rounded-md p-6">
+                <h3 class="font-semibold text-navy-900 mb-4 pb-2 border-b border-gray-200">Manage</h3>
+                <div class="flex gap-3 flex-wrap">
                     <a href="{{ route('admin.requests.index') }}"
-                        class="bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
+                        class="bg-navy-900 text-white px-4 py-2 text-sm font-medium hover:bg-navy-800">
                         View All Requests
                     </a>
                     <a href="{{ route('admin.officers.index') }}"
-                        class="bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
+                        class="border border-navy-900 text-navy-900 px-4 py-2 text-sm font-medium hover:bg-navy-50">
                         Manage Officers
                     </a>
                     <a href="{{ route('admin.ward-offices.index') }}"
-                        class="bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
+                        class="border border-navy-900 text-navy-900 px-4 py-2 text-sm font-medium hover:bg-navy-50">
                         Manage Ward Offices
                     </a>
                     <a href="{{ route('admin.document-types.index') }}"
-                        class="bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
+                        class="border border-navy-900 text-navy-900 px-4 py-2 text-sm font-medium hover:bg-navy-50">
                         Manage Document Types
                     </a>
                 </div>

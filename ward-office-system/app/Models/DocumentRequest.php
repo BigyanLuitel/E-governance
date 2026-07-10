@@ -15,6 +15,7 @@ class DocumentRequest extends Model
         'purpose',
         'form_data',
         'uploaded_file_path',
+        'file_validation',
         'officer_remarks',
         'processed_at',
     ];
@@ -24,6 +25,7 @@ class DocumentRequest extends Model
         return [
             'form_data' => 'array',
             'processed_at' => 'datetime',
+            'file_validation' => 'array',
         ];
     }
 

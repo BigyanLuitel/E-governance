@@ -1,45 +1,43 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Manage Officers
-        </h2>
+        <h2 class="font-bold text-xl text-navy-900 leading-tight">Manage Officers</h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
-                <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-md">
+                <div class="mb-4 px-4 py-3 border-l-4 border-govgreen-800 bg-govgreen-50 text-govgreen-800 text-sm">
                     {{ session('success') }}
                 </div>
             @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium">All Officers</h3>
+            <div class="bg-white border border-gray-200 sm:rounded-md">
+                <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+                    <h3 class="font-semibold text-navy-900">All Officers</h3>
                     <a href="{{ route('admin.officers.create') }}"
-                        class="bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
+                        class="bg-navy-900 text-white px-4 py-2 text-sm font-medium hover:bg-navy-800">
                         + Add Officer
                     </a>
                 </div>
 
                 @if ($officers->isEmpty())
-                    <p class="text-gray-600">No officers created yet.</p>
+                    <p class="text-ink-600 text-sm px-6 py-8">No officers created yet.</p>
                 @else
-                    <table class="w-full text-left">
+                    <table class="w-full text-left text-sm">
                         <thead>
-                            <tr class="border-b">
-                                <th class="py-2">Name</th>
-                                <th class="py-2">Email</th>
-                                <th class="py-2">Ward Office</th>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-ink-600">
+                                <th class="py-3 px-6 font-semibold">Name</th>
+                                <th class="py-3 px-6 font-semibold">Email</th>
+                                <th class="py-3 px-6 font-semibold">Ward Office</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($officers as $officer)
-                                <tr class="border-b">
-                                    <td class="py-2">{{ $officer->name }}</td>
-                                    <td class="py-2">{{ $officer->email }}</td>
-                                    <td class="py-2">{{ $officer->wardOffice->ward_number ?? '—' }}</td>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-6">{{ $officer->name }}</td>
+                                    <td class="py-3 px-6 text-ink-600">{{ $officer->email }}</td>
+                                    <td class="py-3 px-6">{{ $officer->wardOffice->ward_number ?? '—' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DocumentType;
 use App\Models\DocumentRequest;
+use Illuminate\Support\Facades\Http;
+
 class DocumentRequestController extends Controller
 {
     public function create()
@@ -13,6 +15,7 @@ class DocumentRequestController extends Controller
 
         return view('citizen.request-create', compact('documentTypes'));
     }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -23,8 +26,13 @@ class DocumentRequestController extends Controller
         ]);
 
         $filePath = null;
+        $fileValidation = null;
+
         if ($request->hasFile('uploaded_file')) {
-            $filePath = $request->file('uploaded_file')->store('documents', 'public');
+            $uploadedFile = $request->file('uploaded_file');
+            $filePath = $uploadedFile->store('documents', 'public');
+
+            $fileValidation = $this->validateFileWithMLService($uploadedFile);
         }
 
         DocumentRequest::create([
@@ -34,9 +42,30 @@ class DocumentRequestController extends Controller
             'purpose' => $validated['purpose'] ?? null,
             'form_data' => $validated['form_data'],
             'uploaded_file_path' => $filePath,
+            'file_validation' => $fileValidation,
             'status' => 'pending',
         ]);
 
         return redirect()->route('citizen.dashboard')->with('success', 'Request submitted successfully.');
+    }
+
+    private function validateFileWithMLService($uploadedFile): ?array
+    {
+        try {
+            $response = Http::timeout(5)->attach(
+                'file',
+                file_get_contents($uploadedFile->getRealPath()),
+                $uploadedFile->getClientOriginalName()
+            )->post('http://127.0.0.1:8001/validate-file');
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+        } catch (\Exception $e) {
+            // ML service unreachable — fail gracefully, don't block submission
+            return null;
+        }
+
+        return null;
     }
 }

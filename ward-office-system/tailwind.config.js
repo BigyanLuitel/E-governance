@@ -12,7 +12,27 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Source Sans 3"', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                navy: {
+                    900: '#14273F',
+                    800: '#1B334F',
+                    700: '#1F4E79',
+                    50: '#EAF0F6',
+                },
+                govgreen: {
+                    800: '#2F5D3A',
+                    50: '#EAF3EC',
+                },
+                maroon: {
+                    800: '#7A2530',
+                    50: '#F7EAEB',
+                },
+                ink: {
+                    900: '#1E2530',
+                    600: '#4B5563',
+                },
             },
         },
     },
