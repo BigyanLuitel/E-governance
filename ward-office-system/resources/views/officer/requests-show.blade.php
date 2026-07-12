@@ -120,6 +120,32 @@
                     </button>
                 </form>
             </div>
+            {{-- Recommendation Letter --}}
+            @if ($req->status === 'approved')
+                <div class="bg-white border border-gray-200 sm:rounded-md p-6">
+                    <h3 class="font-semibold text-navy-900 mb-4 pb-2 border-b border-gray-200">Recommendation Letter</h3>
+
+                    @if ($req->issued_letter_path)
+                        <p class="text-sm text-ink-600 mb-3">
+                            Issued on {{ $req->letter_issued_at->format('M d, Y') }} — Reference No.
+                            <span class="font-medium text-navy-900">{{ $req->reference_number }}</span>
+                        </p>
+                        <a href="{{ Storage::url($req->issued_letter_path) }}" target="_blank"
+                            class="bg-navy-900 text-white px-4 py-2 text-sm font-medium hover:bg-navy-800 inline-block">
+                            Download Letter
+                        </a>
+                    @else
+                        <p class="text-sm text-ink-600 mb-3">No recommendation letter has been issued for this request yet.</p>
+                        <form method="POST" action="{{ route('officer.requests.issue-letter', $req) }}">
+                            @csrf
+                            <button type="submit"
+                                class="bg-govgreen-800 text-white px-4 py-2 text-sm font-medium hover:opacity-90">
+                                Generate Recommendation Letter
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            @endif
 
             {{-- Status History — ledger-style timeline --}}
             <div class="bg-white border border-gray-200 sm:rounded-md p-6">
@@ -132,11 +158,11 @@
                         @foreach ($req->statusLogs as $index => $log)
                             <li class="mb-6 ml-5 last:mb-0">
                                 <span class="absolute -left-[9px] flex items-center justify-center w-4 h-4 rounded-full border-2 border-white
-                                            @class([
-                                                'bg-govgreen-800' => $log->new_status === 'approved',
-                                                'bg-maroon-800' => $log->new_status === 'rejected',
-                                                'bg-navy-700' => !in_array($log->new_status, ['approved', 'rejected']),
-                                            ])">
+                                                    @class([
+                                                        'bg-govgreen-800' => $log->new_status === 'approved',
+                                                        'bg-maroon-800' => $log->new_status === 'rejected',
+                                                        'bg-navy-700' => !in_array($log->new_status, ['approved', 'rejected']),
+                                                    ])">
                                 </span>
                                 <p class="text-sm font-semibold text-ink-900 capitalize">
                                     {{ str_replace('_', ' ', $log->old_status ?? 'created') }} →

@@ -84,11 +84,11 @@
                         @foreach ($req->statusLogs as $log)
                             <li class="mb-6 ml-5 last:mb-0">
                                 <span class="absolute -left-[9px] flex items-center justify-center w-4 h-4 rounded-full border-2 border-white
-                                            @class([
-                                                'bg-govgreen-800' => $log->new_status === 'approved',
-                                                'bg-maroon-800' => $log->new_status === 'rejected',
-                                                'bg-navy-700' => !in_array($log->new_status, ['approved', 'rejected']),
-                                            ])">
+                                                    @class([
+                                                        'bg-govgreen-800' => $log->new_status === 'approved',
+                                                        'bg-maroon-800' => $log->new_status === 'rejected',
+                                                        'bg-navy-700' => !in_array($log->new_status, ['approved', 'rejected']),
+                                                    ])">
                                 </span>
                                 <p class="text-sm font-semibold text-ink-900 capitalize">
                                     {{ str_replace('_', ' ', $log->old_status ?? 'created') }} →
@@ -105,6 +105,19 @@
                     </ol>
                 @endif
             </div>
+            @if ($req->status === 'approved' && $req->issued_letter_path)
+                <div class="bg-white border border-gray-200 sm:rounded-md p-6">
+                    <h3 class="font-semibold text-navy-900 mb-2">Recommendation Letter</h3>
+                    <p class="text-sm text-ink-600 mb-3">
+                        Your recommendation letter has been issued. Reference No.
+                        <span class="font-medium text-navy-900">{{ $req->reference_number }}</span>
+                    </p>
+                    <a href="{{ Storage::url($req->issued_letter_path) }}" target="_blank"
+                        class="bg-navy-900 text-white px-4 py-2 text-sm font-medium hover:bg-navy-800 inline-block">
+                        Download Your Letter
+                    </a>
+                </div>
+            @endif
 
             <a href="{{ route('citizen.dashboard') }}" class="text-sm text-navy-700 hover:underline">
                 ← Back to Dashboard

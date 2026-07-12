@@ -37,6 +37,7 @@ Route::middleware(['auth', 'role:officer'])->group(function () {
     Route::get('/officer/requests', [OfficerRequestController::class, 'index'])->name('officer.requests.index');
     Route::get('/officer/requests/{documentRequest}', [OfficerRequestController::class, 'show'])->name('officer.requests.show');
     Route::patch('/officer/requests/{documentRequest}', [OfficerRequestController::class, 'update'])->name('officer.requests.update');
+    Route::post('/officer/requests/{documentRequest}/issue-letter', [OfficerRequestController::class, 'issueLetter'])->name('officer.requests.issue-letter');
 });
 
 Route::get('/admin/dashboard', [DashboardController::class, 'admin'])
