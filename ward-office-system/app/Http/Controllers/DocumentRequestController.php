@@ -48,7 +48,14 @@ class DocumentRequestController extends Controller
 
         return redirect()->route('citizen.dashboard')->with('success', 'Request submitted successfully.');
     }
+    public function show(DocumentRequest $documentRequest)
+    {
+        abort_if($documentRequest->citizen_id !== auth()->id(), 403);
 
+        $documentRequest->load(['documentType', 'statusLogs.changedBy']);
+
+        return view('citizen.request-show', ['req' => $documentRequest]);
+    }
     private function validateFileWithMLService($uploadedFile): ?array
     {
         try {

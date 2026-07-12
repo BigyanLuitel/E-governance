@@ -3,6 +3,8 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class',
+
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -20,6 +22,10 @@ export default {
                     800: '#1B334F',
                     700: '#1F4E79',
                     50: '#EAF0F6',
+                },
+                govblue: {
+                    700: '#1B4D89',
+                    600: '#2563A3',
                 },
                 govgreen: {
                     800: '#2F5D3A',

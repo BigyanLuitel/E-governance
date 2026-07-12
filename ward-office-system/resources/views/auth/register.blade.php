@@ -1,15 +1,7 @@
 <x-guest-layout>
-    <div class="max-w-md mx-auto mt-10 bg-white border border-gray-200 sm:rounded-md p-8">
+    <div class="bg-white border border-gray-200 sm:rounded-md p-8">
 
-        <div class="flex items-center gap-3 mb-6 pb-6 border-b border-gray-100">
-            <div class="w-10 h-10 rounded-full border-2 border-navy-900 flex items-center justify-center shrink-0">
-                <span class="font-bold text-navy-900 text-xs">WO</span>
-            </div>
-            <div>
-                <p class="font-bold text-navy-900 leading-tight">Ward Office Portal</p>
-                <p class="text-ink-600 text-xs leading-tight">Register as a citizen</p>
-            </div>
-        </div>
+        <h2 class="font-bold text-navy-900 text-lg mb-6">Register as a Citizen</h2>
 
         <form method="POST" action="{{ route('register') }}">
             @csrf

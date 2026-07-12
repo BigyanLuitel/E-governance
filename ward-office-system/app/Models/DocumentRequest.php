@@ -18,6 +18,9 @@ class DocumentRequest extends Model
         'file_validation',
         'officer_remarks',
         'processed_at',
+        'reference_number',
+        'issued_letter_path',
+        'letter_issued_at',
     ];
 
     protected function casts(): array
@@ -26,7 +29,15 @@ class DocumentRequest extends Model
             'form_data' => 'array',
             'processed_at' => 'datetime',
             'file_validation' => 'array',
+            'letter_issued_at' => 'datetime',
         ];
+    }
+    public function generateReferenceNumber(): string
+    {
+        $year = now()->format('Y');
+        $sequence = str_pad($this->id, 6, '0', STR_PAD_LEFT);
+
+        return "WO-{$year}-{$sequence}";
     }
 
     public function citizen()

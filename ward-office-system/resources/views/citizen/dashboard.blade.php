@@ -32,6 +32,7 @@
                                 <th class="py-3 px-6 font-semibold">Document Type</th>
                                 <th class="py-3 px-6 font-semibold">Status</th>
                                 <th class="py-3 px-6 font-semibold">Submitted</th>
+                                <th class="py-3 px-6 font-semibold"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,12 +41,12 @@
                                     <td class="py-3 px-6">{{ $req->documentType->name }}</td>
                                     <td class="py-3 px-6">
                                         <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide
-                                                    @class([
-                                                        'text-ink-600' => $req->status === 'pending',
-                                                        'text-navy-700' => $req->status === 'under_review',
-                                                        'text-govgreen-800' => $req->status === 'approved',
-                                                        'text-maroon-800' => $req->status === 'rejected',
-                                                    ])">
+                                                                    @class([
+                                                                        'text-ink-600' => $req->status === 'pending',
+                                                                        'text-navy-700' => $req->status === 'under_review',
+                                                                        'text-govgreen-800' => $req->status === 'approved',
+                                                                        'text-maroon-800' => $req->status === 'rejected',
+                                                                    ])">
                                             <span class="w-1.5 h-1.5 rounded-full @class([
                                                 'bg-ink-600' => $req->status === 'pending',
                                                 'bg-navy-700' => $req->status === 'under_review',
@@ -56,6 +57,12 @@
                                         </span>
                                     </td>
                                     <td class="py-3 px-6 text-ink-600">{{ $req->created_at->format('M d, Y') }}</td>
+                                    <td class="py-3 px-6 text-right">
+                                        <a href="{{ route('requests.show', $req) }}"
+                                            class="text-navy-700 font-medium hover:underline">
+                                            View →
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

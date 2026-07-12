@@ -11,9 +11,9 @@ use App\Http\Controllers\Admin\RequestOversightController;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -25,6 +25,7 @@ Route::get('/citizen/dashboard', [DashboardController::class, 'citizen'])
 Route::middleware(['auth', 'role:citizen'])->group(function () {
     Route::get('/requests/create', [DocumentRequestController::class, 'create'])->name('requests.create');
     Route::post('/requests/store', [DocumentRequestController::class, 'store'])->name('requests.store');
+    Route::get('/requests/{documentRequest}', [DocumentRequestController::class, 'show'])->name('requests.show');
 });
 Route::get('/officer/dashboard', [DashboardController::class, 'officer'])
     ->middleware(['auth', 'role:officer'])
