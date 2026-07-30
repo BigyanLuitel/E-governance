@@ -36,10 +36,11 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
+Route::post('/chat', [ChatController::class, 'ask'])->name('chat.ask');
+
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
-    Route::post('/chat', [ChatController::class, 'ask'])->middleware('auth')->name('chat.ask');
 
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
