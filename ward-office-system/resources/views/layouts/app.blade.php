@@ -32,6 +32,11 @@
         </main>
 
         @include('layouts.footer')
+        @auth
+            @if (auth()->user()->isCitizen())
+                <x-chat-widget />
+            @endif
+        @endauth
     </div>
 </body>
 
