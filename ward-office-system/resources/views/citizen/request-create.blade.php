@@ -19,6 +19,20 @@
                     @csrf
 
                     <div class="mb-5 pb-5 border-b border-gray-100">
+                        <label class="block text-sm font-medium text-ink-900 mb-1">Ward Office</label>
+                        <select name="ward_office_id" class="block w-full rounded-md border-gray-300 text-sm" required>
+                            <option value="">-- Select district, municipality &amp; ward --</option>
+                            @foreach ($wardOffices as $ward)
+                                <option value="{{ $ward->id }}" @selected(old('ward_office_id') == $ward->id)>
+                                    {{ $ward->district }} — {{ $ward->municipality }} — {{ $ward->ward_number }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <p class="text-xs text-ink-600 mt-1">Select the ward office this request should be submitted to.
+                        </p>
+                    </div>
+
+                    <div class="mb-5 pb-5 border-b border-gray-100">
                         <label class="block text-sm font-medium text-ink-900 mb-1">Document Type</label>
                         <select name="document_type_id" x-model="selectedType"
                             class="block w-full rounded-md border-gray-300 text-sm" required>

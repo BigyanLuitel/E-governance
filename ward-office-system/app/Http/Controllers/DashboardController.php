@@ -24,9 +24,26 @@ class DashboardController extends Controller
 
         return view('citizen.dashboard', compact('requests'));
     }
-    public function officer()
+
+    public function officer(Request $request)
     {
-        return view('officer.dashboard');
+        $wardId = $request->user()->ward_office_id;
+
+        $stats = [
+            'total' => DocumentRequest::where('ward_office_id', $wardId)->count(),
+            'pending' => DocumentRequest::where('ward_office_id', $wardId)->where('status', 'pending')->count(),
+            'under_review' => DocumentRequest::where('ward_office_id', $wardId)->where('status', 'under_review')->count(),
+            'approved' => DocumentRequest::where('ward_office_id', $wardId)->where('status', 'approved')->count(),
+        ];
+
+        $recentRequests = DocumentRequest::where('ward_office_id', $wardId)
+            ->whereIn('status', ['pending', 'under_review'])
+            ->with(['citizen', 'documentType'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('officer.dashboard', compact('stats', 'recentRequests'));
     }
     public function admin()
     {

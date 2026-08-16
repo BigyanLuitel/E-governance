@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DocumentType;
 use App\Models\DocumentRequest;
+use App\Models\WardOffice;
 use Illuminate\Support\Facades\Http;
 
 class DocumentRequestController extends Controller
@@ -12,13 +13,15 @@ class DocumentRequestController extends Controller
     public function create()
     {
         $documentTypes = DocumentType::where('is_active', true)->get();
+        $wardOffices = WardOffice::orderBy('district')->orderBy('municipality')->orderBy('ward_number')->get();
 
-        return view('citizen.request-create', compact('documentTypes'));
+        return view('citizen.request-create', compact('documentTypes', 'wardOffices'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'ward_office_id' => 'required|exists:ward_offices,id',
             'document_type_id' => 'required|exists:document_types,id',
             'purpose' => 'nullable|string',
             'form_data' => 'required|array',
@@ -38,7 +41,7 @@ class DocumentRequestController extends Controller
         DocumentRequest::create([
             'citizen_id' => $request->user()->id,
             'document_type_id' => $validated['document_type_id'],
-            'ward_office_id' => $request->user()->ward_office_id ?? 1,
+            'ward_office_id' => $validated['ward_office_id'],
             'purpose' => $validated['purpose'] ?? null,
             'form_data' => $validated['form_data'],
             'uploaded_file_path' => $filePath,
@@ -48,6 +51,7 @@ class DocumentRequestController extends Controller
 
         return redirect()->route('citizen.dashboard')->with('success', 'Request submitted successfully.');
     }
+
     public function show(DocumentRequest $documentRequest)
     {
         abort_if($documentRequest->citizen_id !== auth()->id(), 403);
@@ -56,6 +60,7 @@ class DocumentRequestController extends Controller
 
         return view('citizen.request-show', ['req' => $documentRequest]);
     }
+
     private function validateFileWithMLService($uploadedFile): ?array
     {
         try {
@@ -69,7 +74,6 @@ class DocumentRequestController extends Controller
                 return $response->json();
             }
         } catch (\Exception $e) {
-            // ML service unreachable — fail gracefully, don't block submission
             return null;
         }
 
