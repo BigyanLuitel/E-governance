@@ -36,6 +36,7 @@
             <x-chat-widget />
         @endif
     </div>
+    @stack('scripts')
 </body>
 
 </html>

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\DocumentRequest;
 use App\Models\User;
 use App\Models\WardOffice;
+use App\Models\DocumentType;
+
 class DashboardController extends Controller
 {
     public function index(Request $request)
@@ -18,6 +20,7 @@ class DashboardController extends Controller
             'admin' => redirect()->route('admin.dashboard'),
         };
     }
+
     public function citizen(Request $request)
     {
         $requests = $request->user()->documentRequests()->with('documentType')->latest()->get();
@@ -34,7 +37,20 @@ class DashboardController extends Controller
             'pending' => DocumentRequest::where('ward_office_id', $wardId)->where('status', 'pending')->count(),
             'under_review' => DocumentRequest::where('ward_office_id', $wardId)->where('status', 'under_review')->count(),
             'approved' => DocumentRequest::where('ward_office_id', $wardId)->where('status', 'approved')->count(),
+            'rejected' => DocumentRequest::where('ward_office_id', $wardId)->where('status', 'rejected')->count(),
         ];
+
+        $statusChart = [
+            'labels' => ['Pending', 'Under Review', 'Approved', 'Rejected'],
+            'data' => [$stats['pending'], $stats['under_review'], $stats['approved'], $stats['rejected']],
+        ];
+
+        $trendChart = DocumentRequest::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->where('ward_office_id', $wardId)
+            ->where('created_at', '>=', now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
 
         $recentRequests = DocumentRequest::where('ward_office_id', $wardId)
             ->whereIn('status', ['pending', 'under_review'])
@@ -43,8 +59,9 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('officer.dashboard', compact('stats', 'recentRequests'));
+        return view('officer.dashboard', compact('stats', 'statusChart', 'trendChart', 'recentRequests'));
     }
+
     public function admin()
     {
         $stats = [
@@ -57,8 +74,21 @@ class DashboardController extends Controller
             'total_ward_offices' => WardOffice::count(),
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        $statusChart = [
+            'labels' => ['Pending', 'Under Review', 'Approved', 'Rejected'],
+            'data' => [$stats['pending'], $stats['under_review'], $stats['approved'], $stats['rejected']],
+        ];
+
+        $wardChart = WardOffice::withCount('documentRequests')->get();
+
+        $typeChart = DocumentType::withCount('documentRequests')->get();
+
+        $trendChart = DocumentRequest::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->where('created_at', '>=', now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'statusChart', 'wardChart', 'typeChart', 'trendChart'));
     }
-
 }
-
