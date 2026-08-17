@@ -9,7 +9,8 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white border border-gray-200 sm:rounded-md p-6">
 
-                <form method="POST" action="{{ route('requests.store') }}" enctype="multipart/form-data" x-data="{
+                <form method="POST" action="{{ route('requests.store') }}" enctype="multipart/form-data"
+                      x-data="{
                           fieldsMap: {{ Js::from($documentTypes->pluck('required_fields', 'id')) }},
                           selectedType: '',
                           get selectedFields() {
@@ -28,14 +29,13 @@
                                 </option>
                             @endforeach
                         </select>
-                        <p class="text-xs text-ink-600 mt-1">Select the ward office this request should be submitted to.
-                        </p>
+                        <p class="text-xs text-ink-600 mt-1">Select the ward office this request should be submitted to.</p>
                     </div>
 
                     <div class="mb-5 pb-5 border-b border-gray-100">
                         <label class="block text-sm font-medium text-ink-900 mb-1">Document Type</label>
                         <select name="document_type_id" x-model="selectedType"
-                            class="block w-full rounded-md border-gray-300 text-sm" required>
+                                class="block w-full rounded-md border-gray-300 text-sm" required>
                             <option value="">-- Select a document type --</option>
                             @foreach ($documentTypes as $type)
                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -48,10 +48,9 @@
                             <p class="text-xs font-semibold text-ink-600 uppercase tracking-wide">Required Details</p>
                             <template x-for="field in selectedFields" :key="field">
                                 <div>
-                                    <label class="block text-sm font-medium text-ink-900 mb-1 capitalize"
-                                        x-text="field.replace('_', ' ')"></label>
+                                    <label class="block text-sm font-medium text-ink-900 mb-1 capitalize" x-text="field.replace('_', ' ')"></label>
                                     <input type="text" :name="'form_data[' + field + ']'"
-                                        class="block w-full rounded-md border-gray-300 text-sm" required>
+                                           class="block w-full rounded-md border-gray-300 text-sm" required>
                                 </div>
                             </template>
                         </div>
@@ -60,7 +59,7 @@
                     <div class="mb-5 pb-5 border-b border-gray-100">
                         <label class="block text-sm font-medium text-ink-900 mb-1">Purpose</label>
                         <textarea name="purpose" class="block w-full rounded-md border-gray-300 text-sm" rows="3"
-                            placeholder="Briefly describe why you need this document"></textarea>
+                                  placeholder="Briefly describe why you need this document"></textarea>
                     </div>
 
                     <div class="mb-6">
@@ -69,8 +68,7 @@
                         <p class="text-xs text-ink-600 mt-1">PDF, JPG, or PNG. Max size 5MB.</p>
                     </div>
 
-                    <button type="submit"
-                        class="bg-navy-900 text-white px-5 py-2.5 text-sm font-medium hover:bg-navy-800">
+                    <button type="submit" class="bg-navy-900 text-white px-5 py-2.5 text-sm font-medium hover:bg-navy-800">
                         Submit Request
                     </button>
                 </form>
